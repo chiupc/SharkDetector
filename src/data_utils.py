@@ -1,6 +1,8 @@
 import pandas as pd
+from utils import *
 from datetime import datetime
 from workalendar.asia import Malaysia
+from klse_scrapper import *
 
 def split_buy_sell_queue(df_):
     def split_queue(col):

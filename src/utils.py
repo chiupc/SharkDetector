@@ -45,7 +45,7 @@ def build_force_filename(category):
 
 def build_force_csv(category):
     dir_=build_force_dir(category)
-    filename=category.replace('&','').replace(' ','').lower()+'_force'
+    filename=category.replace('&','').replace(' ','').lower()+'_force.csv'
     return dir_+filename
     
 def create_csv_dir(event):

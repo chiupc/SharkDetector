@@ -87,6 +87,7 @@ class Counter:
     def get_volume_threshold(self):
         df_=pd.read_feather(build_force_filename(self.category))
         df_['counter']=df_['counter'].astype(str)
+        df_['counter']=df_['counter'].str.zfill(4)
         volume_threshold=df_[df_['counter']==self.counter].iloc[-1].to_dict()
         return volume_threshold
     
