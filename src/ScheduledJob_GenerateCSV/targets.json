@@ -1,0 +1,11 @@
+[
+	{
+		"Id" : "1",
+		"Arn" : "arn:aws:lambda:ap-southeast-1:662391729800:function:GenerateCounterCSV",
+		"Input": "{\"symbol\":\"symbol_param\",\"counter\":\"counter_param\",\"resolution\":\"resolution_param\"}"
+	}
+]
+
+
+
+
