@@ -45,6 +45,7 @@ def should_send_volume_alert(symbol,counter,queue_type_,oot_type_,oot_list_):
 
 def add_last_done(oot_list_,last_done):
     oot_list_['last_done_price']=last_done.iloc[oot_list_.index.tolist()]['last_done_price']
+    oot_list_['price_pct_open']=last_done.iloc[oot_list_.index.tolist()]['price_pct_open']
     oot_list_['last_done_buy_vol']=last_done.iloc[oot_list_.index.tolist()]['last_done_buy_vol']
     oot_list_['last_done_sell_vol']=last_done.iloc[oot_list_.index.tolist()]['last_done_sell_vol']
     return oot_list_
@@ -61,6 +62,7 @@ def build_alert_message(symbol,counter,queue_type_,oot_type_,oot_list_):
             message=message+'Buy Queue Price: '+str(oot_list_.iloc[i]['buy_queue_price'])+'\n'
             message=message+'Buy Queue Volume: '+str(oot_list_.iloc[i]['buy_vol_chg'])+'\n'
             message=message+'Last Done Price: '+str(oot_list_.iloc[i]['last_done_price'])+'\n'
+            message=message+'Price Change Pct: '+str(oot_list_.iloc[i]['price_pct_open'])+'\n'
             message=message+'Last Done Buy Volume: '+str(oot_list_.iloc[i]['last_done_buy_vol'])+'\n'
             message=message+'Last Done Sell Volume: '+str(oot_list_.iloc[i]['last_done_sell_vol'])+'\n'
             message=message+'-----------------\n'
@@ -73,6 +75,7 @@ def build_alert_message(symbol,counter,queue_type_,oot_type_,oot_list_):
             message=message+'Sell Queue Price: '+str(oot_list_.iloc[i]['sell_queue_price'])+'\n'
             message=message+'Sell Queue Volume: '+str(oot_list_.iloc[i]['sell_vol_chg'])+'\n'
             message=message+'Last Done Price: '+str(oot_list_.iloc[i]['last_done_price'])+'\n'
+            message=message+'Price Change Pct: '+str(oot_list_.iloc[i]['price_pct_open'])+'\n'
             message=message+'Last Done Buy Volume: '+str(oot_list_.iloc[i]['last_done_buy_vol'])+'\n'
             message=message+'Last Done Sell Volume: '+str(oot_list_.iloc[i]['last_done_sell_vol'])+'\n'
             message=message+'-----------------\n'

@@ -22,13 +22,15 @@ class Counter:
         self.today_open=pd.read_csv(build_price_history_csv(self.event)).iloc[-1]['Close']
         create_csv_dir(self.event) #Create directory for price, quotes_movements and calculated_data
         self.buffer=pd.DataFrame() #Buffer for raw quote movements data
+        self.buffer_temp=pd.DataFrame()
+        self.is_repeated=True
         self.last_done=pd.DataFrame()
         self.last_done_sell=0
         self.last_done_buy=0
         self.sell_queue=pd.DataFrame()
         self.buy_queue=pd.DataFrame()
         self.sharks=pd.DataFrame()
-        self.endtime=datetime.combine(date.today(), time(17)).timestamp()
+        self.endtime=datetime.combine(date.today(), time(18)).timestamp()
         if scheduler_on:
             self.sched = BackgroundScheduler()
             self.sched.add_job(self.update_counter, 'interval', seconds=10,max_instances=3)
@@ -56,16 +58,28 @@ class Counter:
         else:
             df_=get_quote_movements(self.session,self.event,live=live)
         df_=df_.iloc[::-1].reset_index().drop(columns=['index'])
-        self.buffer=self.buffer.append(df_)
-        df_=split_buy_sell_queue(df_)
-        self.sell_queue=df_[['time','sell_vol_chg','sell_queue_price']]
-        self.buy_queue=df_[['time','buy_vol_chg','buy_queue_price']]
-        last_done_df=df_[['time','last_done_vol','last_done_price','type']]
-        self.last_done['last_done_price']=last_done_df['last_done_price'].fillna(method='ffill').fillna(self.today_open)
-        self.last_done['last_done_sell_vol']=last_done_df[last_done_df['type']=='Sell Down'].last_done_vol.cumsum()
-        self.last_done['last_done_sell_vol']=self.last_done['last_done_sell_vol'].fillna(method='ffill').fillna(0)
-        self.last_done['last_done_buy_vol']=last_done_df[last_done_df['type']=='Buy Up'].last_done_vol.cumsum()
-        self.last_done['last_done_buy_vol']=self.last_done['last_done_buy_vol'].fillna(method='ffill').fillna(0)    
+        self.is_repeated=self.buffer_temp.equals(df_)
+        print(self.is_repeated)
+        if not self.is_repeated:
+            #clear temp buffer
+            self.buffer=self.buffer.append(self.buffer_temp)
+            self.buffer_temp=pd.DataFrame()
+            self.buffer_temp=df_
+            df_=split_buy_sell_queue(df_)
+            self.sell_queue=df_[['time','sell_vol_chg','sell_queue_price']]
+            self.buy_queue=df_[['time','buy_vol_chg','buy_queue_price']]
+            last_done_df=df_[['time','last_done_vol','last_done_price','type']]
+            self.last_done['last_done_price']=last_done_df['last_done_price'].fillna(method='ffill').fillna(self.today_open)
+            self.last_done['price_pct_open']=self.last_done['last_done_price'].transform(lambda x: round((x-self.today_open)/self.today_open*100,2))
+            self.last_done['last_done_sell_vol']=last_done_df[last_done_df['type']=='Sell Down'].last_done_vol.cumsum()
+            self.last_done['last_done_sell_vol']=self.last_done['last_done_sell_vol'].fillna(method='ffill').fillna(0)
+            self.last_done['last_done_sell_vol']=self.last_done['last_done_sell_vol']+self.last_done_sell
+            self.last_done['last_done_buy_vol']=last_done_df[last_done_df['type']=='Buy Up'].last_done_vol.cumsum()
+            self.last_done['last_done_buy_vol']=self.last_done['last_done_buy_vol'].fillna(method='ffill').fillna(0)
+            self.last_done['last_done_buy_vol']=self.last_done['last_done_buy_vol']+self.last_done_sell
+            self.last_done_sell=self.last_done.iloc[-1]['last_done_sell_vol']
+            self.last_done_buy=self.last_done.iloc[-1]['last_done_buy_vol']
+            
         
     def get_day_volume(self):
         self.get_volume(False)
@@ -78,7 +92,8 @@ class Counter:
             self.update_last_updated_timestamp()
             self.refresh_price()       
             self.refresh_volume()
-            self.detect_shark()
+            if not self.is_repeated:
+                self.detect_shark()
         except Exception as e:
             print(e)
         if(self.last_updated_time>self.endtime):
@@ -93,7 +108,6 @@ class Counter:
     
     def detect_shark(self):
         df_=out_of_threshold(self.symbol,self.counter,self.volume_threshold,self.buy_queue,self.sell_queue,self.last_done)
-        
         self.sharks=self.sharks.append(df_)
                 
     def flush_buffer(self):
