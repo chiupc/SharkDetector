@@ -10,15 +10,18 @@ def main():
     generate_session()
     session=read_session()
     category=sys.argv[1]
-    istodaydata=sys.argv[2]
-    if istodaydata=="true":
-        tomorrow=date.today()+ timedelta(days=1)
-        yesterday=date.today() - timedelta(days=1)
-        to_=datetime.combine(tomorrow, dtime(9)).timestamp()   
-        from_=datetime.combine(yesterday, dtime(9)).timestamp()
-    else:
-        from_=int(sys.argv[3])
-        to_=int(sys.argv[4])
+    to_=datetime.now()
+    from_=to_ - timedelta(days=int(sys.argv[2]))
+    to_=int(to_.timestamp())
+    from_=int(from_.timestamp())
+    #if istodaydata=="true":
+    #    tomorrow=date.today()+ timedelta(days=1)
+    #    yesterday=date.today() - timedelta(days=1)
+    #    to_=datetime.combine(tomorrow, dtime(9)).timestamp()   
+    #    from_=datetime.combine(yesterday, dtime(9)).timestamp()
+    #else:
+    #    from_=int(sys.argv[3])
+    #    to_=int(sys.argv[4])
     mine_price_data('Main Market',category,'1',from_,to_)
     mine_quote_movements(session=session,board='Main Market',category=category,from_=from_,to_=to_)
 
