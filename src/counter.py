@@ -6,6 +6,11 @@ from datetime import datetime,time,date,timedelta
 from session_handler import *
 from analytics import *
 from apscheduler.schedulers.background import BackgroundScheduler
+import logging
+from logging.config import fileConfig
+
+fileConfig('logging.ini')
+logger = logging.getLogger()
 
 class Counter:
     def __init__(self, symbol, counter,scheduler_on):
@@ -60,7 +65,7 @@ class Counter:
             df_=get_quote_movements(self.session,self.event,live=False)
         df_=df_.iloc[::-1].reset_index().drop(columns=['index'])
         self.is_repeated=self.buffer_temp.equals(df_)
-        print(self.is_repeated)
+        
         if not self.is_repeated:
             #clear temp buffer
             self.buffer=self.buffer.append(self.buffer_temp.copy())

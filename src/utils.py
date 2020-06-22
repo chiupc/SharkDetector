@@ -17,7 +17,7 @@ def distribute_requests(event):
         events.append(event)
     return events
 
-def build_event_lists(lists_,from_,to_,resolution_='1m',csv_=1):
+def build_event_lists(lists_,from_,to_,resolution_='1',csv_=1):
     events=[]
     for list_ in lists_:
         event={"category":list_['cat'],"symbol":list_['symbol'],"counter":list_['code'],"resolution":resolution_, "from":from_,"to":to_, "write_csv":csv_}

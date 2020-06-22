@@ -39,6 +39,7 @@ def crawl_time_sales(session,event):
     df.to_csv('test.csv')
     
 def crawl_quote_movements(session,event,live=False):
+    print(event)
     date_=datetime.fromtimestamp(event['to'])
     date_=date_.strftime("%Y-%m-%d")
     empty_chars='\xa0'     
@@ -92,9 +93,10 @@ def get_quote_movements(session,event,live=True):
 def mine_quote_movements(session,board,category,from_,to_):
     df=get_board_category_listings(board,category)
     lists_=df[['symbol','code','cat']].to_dict('records')
-    events=build_event_lists(lists_=lists_,from_=from_,to_=to_)
+    events=build_event_lists(lists_=lists_,from_=from_,to_=to_)    
     for event in events:
         events_=distribute_requests(event)
+        print(events_)
         for event_ in events_:
             try:
                 cal = Malaysia()
