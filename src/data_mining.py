@@ -7,6 +7,7 @@ import sys
 
 #test case for mine price data
 def main():
+    generate_session()
     session=read_session()
     category=sys.argv[1]
     istodaydata=sys.argv[2]
@@ -18,7 +19,7 @@ def main():
     else:
         from_=int(sys.argv[3])
         to_=int(sys.argv[4])
-    mine_price_data('Main Market',category,'1m',from_,to_)
+    mine_price_data('Main Market',category,'1',from_,to_)
     mine_quote_movements(session=session,board='Main Market',category=category,from_=from_,to_=to_)
 
 if __name__ == "__main__":

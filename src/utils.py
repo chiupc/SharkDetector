@@ -5,7 +5,7 @@ import os
 def distribute_requests(event):
     #split query time if longer than 1 day
     events=[]
-    if(event['resolution']=='1m'):
+    if(event['resolution']=='1'):
         diff=event['to']-event['from']
         if(diff>86400):
             while(event['to']>event['from']):                

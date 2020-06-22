@@ -5,6 +5,15 @@ from utils import *
 import os
 import pandas as pd
 import yfinance as yf
+import json
+from datetime import datetime
+import pytz
+import logging
+from logging.config import fileConfig
+
+tz = pytz.timezone('Asia/Singapore')
+fileConfig('logging.ini')
+logger = logging.getLogger()
 
 def live_price(counter):
     URL = 'https://www.klsescreener.com/v2/stocks/view/'+str(counter)
@@ -48,6 +57,7 @@ def live_volume_stats(counter):
 
 #resolution= [1m, 5m, 1d, 1w]
 def mine_price_data(board,category,resolution,from_,to_):
+    logger.info('Starting price mining for category ' + category + ' with resolution ' + resolution + ' from ' + datetime.fromtimestamp(from_).strftime("%Y-%m-%d") + ' to ' + datetime.fromtimestamp(to_).strftime("%Y-%m-%d"))
     df=get_board_category_listings(board,category)
     lists_=df[['symbol','code','cat']].to_dict('records')
     events=build_event_lists(lists_=lists_,resolution_=resolution,from_=from_,to_=to_)
@@ -68,19 +78,37 @@ def live_price_yf(event):
 def crawl_data(events):
     for event_ in events:
         events__ = distribute_requests(event_)
+        logger.debug(events__)
         for event__ in events__:
-            df_=live_price_yf(event__)
+            #yahoo finance does not provide more than 1 day data for many KLSE stocks, switch back to KLSE screener
+            #df_=live_price_yf(event__)
+            #KLSE screener
+            df_=klse_price_data(event__)
             name_=event__['symbol']+'_'+str(event__['counter'])
             dir_=os.path.join('history','price')
             dir_=os.path.join(dir_,event_['category'])
             dir_=os.path.join(dir_,name_)
-            dir_=os.path.join(dir_,event_['resolution'])
+            if event_['resolution']!='1':
+                dir_=os.path.join(dir_,event_['resolution'])
             if len(df_)>0:        
                 if not os.path.exists(dir_): os.makedirs(dir_)
                 if(event__['write_csv']):
                     csv_name=name_+'_'+datetime.fromtimestamp(event__['from']).strftime("%Y-%m-%d")
-                    df_.to_csv(os.path.join(dir_,csv_name+'.csv'))
-    
+                    df_.to_csv(os.path.join(dir_,csv_name+'.csv'),index=False)
+
+def klse_price_data(event):
+    df= pd.DataFrame()
+    logger.debug(event)
+    URL='https://www.klsescreener.com/v2/trading_view/history?symbol='+event['counter']+'&resolution='+event['resolution']+'&from='+str(event['from'])+'&to='+str(event['to'])
+    print(URL)
+    page = requests.get(URL)
+    jsonobj=json.loads(page.text)
+    logger.debug(jsonobj)
+    if json.loads(page.text)['s']=='ok':
+        df=pd.DataFrame(json.loads(page.text)).drop(columns=['s','date_from','date_to']).rename(columns={'t':'Datetime','c':'Close','o':'Open','h':'High','l':'Low','v':'Volume'})
+        df['Datetime']=df['Datetime'].astype(int).transform(lambda x: datetime.fromtimestamp(x).astimezone(tz).strftime('%Y-%m-%d %H:%M:%S%Z'))
+    return df
+                    
 def get_listings():
     URL = 'https://www.klsescreener.com/v2/screener/quote_results?getquote=1'
     page = requests.get(URL)

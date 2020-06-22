@@ -19,7 +19,7 @@ class Counter:
         #self.last_updated_time=1592381303
         self.last_updated_time=datetime.combine(date.today()-timedelta(days=3), time(17)).timestamp()
         self.event={'symbol':self.symbol,'counter':self.counter,'category':self.category,'to':self.last_updated_time}
-        self.today_open=pd.read_csv(build_price_history_csv(self.event)).iloc[-1]['Close']
+        #self.today_open=pd.read_csv(build_price_history_csv(self.event)).iloc[-1]['Close']
         create_csv_dir(self.event) #Create directory for price, quotes_movements and calculated_data
         self.buffer=pd.DataFrame() #Buffer for raw quote movements data
         self.buffer_temp=pd.DataFrame()
@@ -57,15 +57,15 @@ class Counter:
             else:
                 df_=get_quote_movements(self.session,self.event,live=live)
         else:
-            df_=get_quote_movements(self.session,self.event,live=live)
+            df_=get_quote_movements(self.session,self.event,live=False)
         df_=df_.iloc[::-1].reset_index().drop(columns=['index'])
         self.is_repeated=self.buffer_temp.equals(df_)
         print(self.is_repeated)
         if not self.is_repeated:
             #clear temp buffer
-            self.buffer=self.buffer.append(self.buffer_temp)
+            self.buffer=self.buffer.append(self.buffer_temp.copy())
             self.buffer_temp=pd.DataFrame()
-            self.buffer_temp=df_
+            self.buffer_temp=df_.copy()
             df_=split_buy_sell_queue(df_)
             self.sell_queue=df_[['time','sell_vol_chg','sell_queue_price']]
             self.buy_queue=df_[['time','buy_vol_chg','buy_queue_price']]
