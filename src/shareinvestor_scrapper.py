@@ -11,6 +11,7 @@ from utils import *
 import os
 from workalendar.asia import Malaysia
 from data_utils import *
+import re
 
 sgtz=pytz.timezone('Asia/Singapore')
 
@@ -115,25 +116,20 @@ def mine_quote_movements(session,board,category,from_,to_):
             except Exception as e: print(e)
 
 def split_buy_sell_queue(df_):
-    def split_queue(col):
-        test=df_[col].str.split(" ", n = 1, expand = True)
-        buy_vol_chg=list()
-        buy_vol = list()
-        for item in list(test[0].fillna('0').values):
-            try:
-                buy_vol_chg.append(int(item.replace(',','').replace('(','').replace(')','')))
-            except Exception as e:
-                buy_vol_chg.append(0)
-        for item in list(test[1].fillna('0').values):
-            try:
-                buy_vol.append(int(item.replace(',','')))
-            except Exception as e:
-                buy_vol.append(0)
-        return buy_vol_chg,buy_vol 
-    buy_vol_chg,buy_vol =split_queue('buy_queue_vol')
-    sell_vol_chg,sell_vol =split_queue('sell_queue_vol')
-    df_['buy_queue_vol']=buy_vol
-    df_['buy_vol_chg']=buy_vol_chg
-    df_['sell_queue_vol']=sell_vol
-    df_['sell_vol_chg']=sell_vol_chg
-    return df_               
+    def raw_queue_to_vol_chg(str_):
+        found=re.findall('\((.*?)\)', str_)
+        if found:
+            return float(found[0])
+        #else:
+        #    found=re.findall('\d+', str_)
+        #    return int(found[0])
+    def raw_queue_to_queue_vol(str_):
+        splits=str_.split()
+        return float(splits[-1])
+    df_['buy_queue_vol']=df_['buy_queue_vol'].str.replace(',','')
+    df_['sell_queue_vol']=df_['sell_queue_vol'].str.replace(',','')
+    df_['buy_vol_chg']=df_['buy_queue_vol'].dropna().astype(str).apply(raw_queue_to_vol_chg)
+    df_['sell_vol_chg']=df_['sell_queue_vol'].dropna().astype(str).apply(raw_queue_to_vol_chg)
+    df_['buy_queue_vol']=df_['buy_queue_vol'].dropna().astype(str).apply(raw_queue_to_queue_vol)
+    df_['sell_queue_vol']=df_['sell_queue_vol'].dropna().astype(str).apply(raw_queue_to_queue_vol)
+    return df_

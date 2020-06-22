@@ -74,6 +74,7 @@ def crawl_data(events):
             dir_=os.path.join('history','price')
             dir_=os.path.join(dir_,event_['category'])
             dir_=os.path.join(dir_,name_)
+            dir_=os.path.join(dir_,event_['resolution'])
             if len(df_)>0:        
                 if not os.path.exists(dir_): os.makedirs(dir_)
                 if(event__['write_csv']):

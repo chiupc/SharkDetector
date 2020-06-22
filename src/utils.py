@@ -13,6 +13,8 @@ def distribute_requests(event):
                 event_copy['from']=event_copy['to']-86400
                 event['to']=event['to']-86400
                 events.append(event_copy)
+    else:
+        events.append(event)
     return events
 
 def build_event_lists(lists_,from_,to_,resolution_='1m',csv_=1):

@@ -17,7 +17,7 @@ class Counter:
         self.volume_threshold=self.get_volume_threshold()
         self.price=live_price(self.counter)
         #self.last_updated_time=1592381303
-        self.last_updated_time=datetime.combine(date.today()-timedelta(days=1), time(17)).timestamp()
+        self.last_updated_time=datetime.combine(date.today()-timedelta(days=3), time(17)).timestamp()
         self.event={'symbol':self.symbol,'counter':self.counter,'category':self.category,'to':self.last_updated_time}
         self.today_open=pd.read_csv(build_price_history_csv(self.event)).iloc[-1]['Close']
         create_csv_dir(self.event) #Create directory for price, quotes_movements and calculated_data
@@ -30,6 +30,7 @@ class Counter:
         self.sell_queue=pd.DataFrame()
         self.buy_queue=pd.DataFrame()
         self.sharks=pd.DataFrame()
+        self.shark_count={'buy_shark':0,'sell_shark':0}
         self.endtime=datetime.combine(date.today(), time(18)).timestamp()
         if scheduler_on:
             self.sched = BackgroundScheduler()
@@ -107,8 +108,9 @@ class Counter:
         return volume_threshold
     
     def detect_shark(self):
-        df_=out_of_threshold(self.symbol,self.counter,self.volume_threshold,self.buy_queue,self.sell_queue,self.last_done)
+        df_,shark_count=out_of_threshold(self.symbol,self.counter,self.volume_threshold,self.buy_queue,self.sell_queue,self.last_done,self.shark_count)
         self.sharks=self.sharks.append(df_)
+        self.shark_count=shark_count
                 
     def flush_buffer(self):
         csv_name=build_quote_movements_csv(self.event)

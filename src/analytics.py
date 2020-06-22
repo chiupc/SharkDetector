@@ -1,7 +1,7 @@
 import pandas as pd
 from messenger_handler import *
 
-def out_of_threshold(symbol,counter,volume_threshold,buy_queue,sell_queue,last_done):
+def out_of_threshold(symbol,counter,volume_threshold,buy_queue,sell_queue,last_done,shark_count):
     df_=pd.DataFrame()
     buy_queue_mean=volume_threshold['buy_vol_chg_max_mean']
     buy_queue_plusonesig=volume_threshold['buy_vol_chg_max_mean']+volume_threshold['buy_vol_chg_max_std']
@@ -29,19 +29,22 @@ def out_of_threshold(symbol,counter,volume_threshold,buy_queue,sell_queue,last_d
     #
     #append buy & sell list
     df_=df_.append(buy_big_oot_list).append(buy_normal_oot_list).append(buy_small_oot_list)
+    shark_count['buy_shark']=shark_count['buy_shark']+len(buy_big_oot_list)+len(buy_normal_oot_list)+len(buy_small_oot_list)
     #df_=df_.append(sell_big_oot_list).append(sell_normal_oot_list).append(sell_small_oot_list)
-    should_send_volume_alert(symbol,counter,'buy','Big Shark',buy_big_oot_list)
-    should_send_volume_alert(symbol,counter,'buy','Normal Shark',buy_normal_oot_list)
-    should_send_volume_alert(symbol,counter,'buy','Small Shark',buy_small_oot_list)
+    #shark_count['sell_shark']=shark_count['sell_shark']+len(sell_big_oot_list)+len(sell_normal_oot_list)+len(sell_small_oot_list)
+    should_send_volume_alert(symbol,counter,'buy','Big Shark',buy_big_oot_list,shark_count)
+    should_send_volume_alert(symbol,counter,'buy','Normal Shark',buy_normal_oot_list,shark_count)
+    should_send_volume_alert(symbol,counter,'buy','Small Shark',buy_small_oot_list,shark_count)
     #should_send_volume_alert(symbol,counter,'sell','Big Shark',sell_big_oot_list)
     #should_send_volume_alert(symbol,counter,'sell','Normal Shark',sell_normal_oot_list)
     #should_send_volume_alert(symbol,counter,'sell','Small Shark',sell_small_oot_list)
-    return df_
+    return df_,shark_count
     
-def should_send_volume_alert(symbol,counter,queue_type_,oot_type_,oot_list_):
+def should_send_volume_alert(symbol,counter,queue_type_,oot_type_,oot_list_,shark_count):
     if len(oot_list_)>0:
-        message=build_alert_message(symbol,counter,queue_type_,oot_type_,oot_list_)
-        send_volume_alert(message)
+        messages=build_alert_message(symbol,counter,queue_type_,oot_type_,oot_list_,shark_count)
+        for message in messages:
+            send_volume_alert(message)
 
 def add_last_done(oot_list_,last_done):
     oot_list_['last_done_price']=last_done.iloc[oot_list_.index.tolist()]['last_done_price']
@@ -50,9 +53,14 @@ def add_last_done(oot_list_,last_done):
     oot_list_['last_done_sell_vol']=last_done.iloc[oot_list_.index.tolist()]['last_done_sell_vol']
     return oot_list_
    
-def build_alert_message(symbol,counter,queue_type_,oot_type_,oot_list_):
+def build_alert_message(symbol,counter,queue_type_,oot_type_,oot_list_,shark_count):
+    #facebook messenger api maximum length is 2000, ~approx. 7 blocks of shark info
+    message_list=[]
     message=oot_type_ + '\nSymbol: ' + symbol + ' (' + counter + ')\n'
     for i in range(len(oot_list_)):
+        if i > 7:
+            message_list.append(message)
+            message=oot_type_ + '\nSymbol: ' + symbol + ' (' + counter + ')\n'
         if(queue_type_=='buy'):
             #message=message+'Time: '+str(oot_list_.iloc[i]['time'])+' | '
             #message=message+'Buy Queue Price: '+str(oot_list_.iloc[i]['buy_queue_price'])+' | '
@@ -65,6 +73,7 @@ def build_alert_message(symbol,counter,queue_type_,oot_type_,oot_list_):
             message=message+'Price Change Pct: '+str(oot_list_.iloc[i]['price_pct_open'])+'\n'
             message=message+'Last Done Buy Volume: '+str(oot_list_.iloc[i]['last_done_buy_vol'])+'\n'
             message=message+'Last Done Sell Volume: '+str(oot_list_.iloc[i]['last_done_sell_vol'])+'\n'
+            message=message+'Buy Shark Appearance: '+str(shark_count['buy_shark'])+'\n'
             message=message+'-----------------\n'
         elif(queue_type_=='sell'):
             #message=message+'Time: '+str(oot_list_.iloc[i]['time'])+' | '
@@ -78,8 +87,10 @@ def build_alert_message(symbol,counter,queue_type_,oot_type_,oot_list_):
             message=message+'Price Change Pct: '+str(oot_list_.iloc[i]['price_pct_open'])+'\n'
             message=message+'Last Done Buy Volume: '+str(oot_list_.iloc[i]['last_done_buy_vol'])+'\n'
             message=message+'Last Done Sell Volume: '+str(oot_list_.iloc[i]['last_done_sell_vol'])+'\n'
-            message=message+'-----------------\n'
-    return message
+            message=message+'Sell Shark Appearance: '+str(shark_count['sell_shark'])+'\n'
+            message=message+'-----------------\n'            
+    message_list.append(message)
+    return message_list
         
     
     
