@@ -21,7 +21,6 @@ class Counter:
         print(self.category)
         self.volume_threshold=self.get_volume_threshold()
         self.price=live_price(self.counter)
-        #self.last_updated_time=1592381303
         self.last_updated_time=datetime.combine(date.today()-timedelta(days=3), time(17)).timestamp()
         self.event={'symbol':self.symbol,'counter':self.counter,'category':self.category,'to':self.last_updated_time}
         #self.today_open=pd.read_csv(build_price_history_csv(self.event)).iloc[-1]['Close']
@@ -60,18 +59,21 @@ class Counter:
             if os.path.exists(csvpath):
                 df_=pd.read_csv(csvpath,parse_dates=['time'])
             else:
+                logger.debug("Context information passed to the function to get live quote movements: " + event)
                 df_=get_quote_movements(self.session,self.event,live=live)
         else:
-            df_=get_quote_movements(self.session,self.event,live=False)
+            df_=get_quote_movements(self.session,self.event,live=live)
         df_=df_.iloc[::-1].reset_index().drop(columns=['index'])
         self.is_repeated=self.buffer_temp.equals(df_)
-        
+        logger.debug("Check if new quote movements data is duplicate of buffer_temp: " + self.is_repeated)
         if not self.is_repeated:
             #clear temp buffer
+            logger.debug("New quote movements not a duplicate. Proceed to flush buffer_temp to buffer")
             self.buffer=self.buffer.append(self.buffer_temp.copy())
             self.buffer_temp=pd.DataFrame()
             self.buffer_temp=df_.copy()
             df_=split_buy_sell_queue(df_)
+            logger.debug("Finished clearing buffer_temp. New quote movements flushed to buffer_temp and splitted: " + self.buffer_temp)
             self.sell_queue=df_[['time','sell_vol_chg','sell_queue_price']]
             self.buy_queue=df_[['time','buy_vol_chg','buy_queue_price']]
             last_done_df=df_[['time','last_done_vol','last_done_price','type']]
