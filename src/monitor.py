@@ -1,5 +1,6 @@
 from session_handler import *
 from counter import Counter
+import time
 
 def main():
     generate_session()
@@ -11,6 +12,8 @@ def main():
     gtronic=Counter(symbol='GTRONIC',counter='7022',scheduler_on=True)
     dsonic=Counter(symbol='DSONIC',counter='5216',scheduler_on=True)
     mi=Counter(symbol='MI',counter='5286',scheduler_on=True)
+    while True:
+        time.sleep(1)
     
 if __name__ == "__main__":
     main()
