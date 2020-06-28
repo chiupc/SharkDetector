@@ -2,28 +2,40 @@ import pandas as pd
 from klse_scrapper import *
 from shareinvestor_scrapper import *
 from utils import *
-from datetime import datetime,time,date,timedelta
+from datetime import datetime, time, date, timedelta
 from session_handler import *
 from analytics import *
 from apscheduler.schedulers.background import BackgroundScheduler
 import logging
 from logging.config import fileConfig
+from workalendar.asia import Malaysia
 
 fileConfig('logging.ini')
 logger = logging.getLogger()
 
 class Counter:
     def __init__(self, symbol, counter,scheduler_on):
-        self.session=read_session()
+        self.session = read_session()
         self.symbol = symbol
         self.counter = counter
         self.category = get_counter_category(counter)
-        print(self.category)
-        self.volume_threshold=self.get_volume_threshold()
-        self.price=live_price(self.counter)
-        self.last_updated_time=datetime.combine(date.today()-timedelta(days=3), time(17)).timestamp()
-        self.event={'symbol':self.symbol,'counter':self.counter,'category':self.category,'to':self.last_updated_time}
-        #self.today_open=pd.read_csv(build_price_history_csv(self.event)).iloc[-1]['Close']
+        print(self.symbol)
+        self.volume_threshold = self.get_volume_threshold()
+        self.price = live_price(self.counter)
+        self.last_updated_time = datetime.combine(date.today()-timedelta(days=1), time(17))
+        #today open price obtained from the cloasing price of the last working day.
+        isworkingday=Malaysia().is_working_day(date(self.last_updated_time.year, self.last_updated_time.month, self.last_updated_time.day))
+        while not isworkingday: #while loop to iterate to the last working day with workalendar
+            self.last_updated_time = datetime.combine(self.last_updated_time - timedelta(days=1), time(17))
+            isworkingday = Malaysia().is_working_day(
+                date(self.last_updated_time.year, self.last_updated_time.month, self.last_updated_time.day))
+        self.last_updated_time = self.last_updated_time.timestamp()
+        self.event = {'symbol':self.symbol, 'counter':self.counter, 'category':self.category, 'to':self.last_updated_time}
+        #prepare event with 'from' and 'resolution' added for klse screener api
+        self.event['from'] = self.last_updated_time-43200
+        self.event['resolution'] = 'D'
+        self.today_open = klse_price_data(self.event)['Close'].astype(float).iloc[-1]
+        logger.info("Today Open Price:" + str(self.today_open))
         create_csv_dir(self.event) #Create directory for price, quotes_movements and calculated_data
         self.buffer=pd.DataFrame() #Buffer for raw quote movements data
         self.buffer_temp=pd.DataFrame()
