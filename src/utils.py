@@ -64,3 +64,10 @@ def get_counter_category(counter):
     listings=pd.read_csv('klse_listings.csv')
     return listings[listings['code']==counter]['cat'].values[0]
     
+def get_counter_list(category="All"):
+    listings=pd.read_csv('klse_listings.csv')
+    if category=="All":
+        return listings['code'].values,listings['symbol'].values
+    else:
+        return listings[listings['cat']==category]['code'].values,listings[listings['cat']==category]['symbol'].values
+    
