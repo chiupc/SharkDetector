@@ -1,0 +1,17 @@
+version: '2'
+services:
+  nifi:
+    image: apache/nifi
+    ports:
+     - "8080:8080"
+    volumes:
+     - D:\nifi\scriptfiles:/opt/scriptfiles 
+     - D:\nifi\certfiles:/opt/certfiles 
+     - D:\nifi\logs:/opt/nifi/logs 
+     - D:\nifi\flowfile_repository:/opt/nifi/flowfile_repository 
+     - D:\nifi\database_repository:/opt/nifi/database_repository
+     - D:\nifi\content_repository:/opt/nifi/content_repository 
+     - D:\nifi\nifi_content:/opt/nifi/nifi-current/content_repository 
+     - D:\nifi\provenance_repository:/opt/nifi/provenance_repository 
+     - D:\data:/data
+  

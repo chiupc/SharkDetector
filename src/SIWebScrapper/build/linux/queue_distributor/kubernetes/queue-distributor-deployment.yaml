@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: queue-distributor
+  name: queue-distributor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: queue-distributor
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: queue-distributor
+    spec:
+      containers:
+      - image: chiupc/queue-distributor:latest
+        imagePullPolicy: ""
+        name: queue-distributor
+        ports:
+        - containerPort: 5000
+        resources: {}
+        volumeMounts:
+        - name: config-volume
+          mountPath: /conf
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+       - name: config-volume
+         configMap:
+        # Provide the name of the ConfigMap containing the files you want
+        # to add to the container
+           name: consumer-config
+status: {}

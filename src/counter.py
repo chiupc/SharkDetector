@@ -72,6 +72,7 @@ class Counter:
                 df_=pd.read_csv(csvpath,parse_dates=['time'])
             else:
                 df_=get_quote_movements(self.session,self.event,live=live)
+                #df_=df_.set_index('time')
         else:
             df_=get_quote_movements(self.session,self.event,live=live)
         df_=df_.iloc[::-1].reset_index().drop(columns=['index'])
@@ -81,7 +82,7 @@ class Counter:
             self.buffer=self.buffer.append(self.buffer_temp.copy())
             self.buffer_temp=pd.DataFrame()
             self.buffer_temp=df_.copy()
-            df_=split_buy_sell_queue(df_)
+            #df_=split_buy_sell_queue(df_)
             self.sell_queue=df_[['time','sell_vol_chg','sell_queue_price']]
             self.buy_queue=df_[['time','buy_vol_chg','buy_queue_price']]
             last_done_df=df_[['time','last_done_vol','last_done_price','type']]

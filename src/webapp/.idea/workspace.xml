@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="04369b26-fa1a-41a2-b3f9-37f7f421583a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../flink/quote-movements-streaming/quickstart/src/main/java/org/sharkdetector/quotemovements_streaming/QuoteMovementMonitoring.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../flink/quote-movements-streaming/quickstart/src/main/java/util/QuoteMovement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../flink/quotemovement-monitoring/quotemovement-monitoring/.idea/libraries/Maven__org_apache_logging_log4j_log4j_api_2_13_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../flink/quotemovement-monitoring/quotemovement-monitoring/src/main/java/org/sharkdetector/flink/QuoteMovementMonitoring.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../flink/quotemovement-monitoring/quotemovement-monitoring/src/main/java/org/sharkdetector/flink/function/MapQuoteMovementFunction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../flink/quotemovement-monitoring/quotemovement-monitoring/src/main/java/org/sharkdetector/flink/function/UpdatableQuoteMovementAlertFunction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../flink/quotemovement-monitoring/quotemovement-monitoring/src/main/java/org/sharkdetector/flink/schema/EventDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../flink/quotemovement-monitoring/quotemovement-monitoring/src/main/java/org/sharkdetector/flink/schema/ThresholdDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../flink/quotemovement-monitoring/quotemovement-monitoring/src/main/java/org/sharkdetector/flink/util/Alert.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../flink/quotemovement-monitoring/quotemovement-monitoring/src/main/java/org/sharkdetector/flink/util/QuoteMovement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../flink/quotemovement-monitoring/quotemovement-monitoring/src/main/java/org/sharkdetector/flink/util/QuoteMovementRaw.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../flink/quotemovement-monitoring/quotemovement-monitoring/src/main/java/org/sharkdetector/flink/util/Threshold.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../kubernetes/cluster-operator" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/webapp.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.ipynb_checkpoints/fibonacci_test-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../.ipynb_checkpoints/fibonacci_test-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.ipynb_checkpoints/rsi_test-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../.ipynb_checkpoints/rsi_test-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.ipynb_checkpoints/shareinvestor_scrapper-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../.ipynb_checkpoints/shareinvestor_scrapper-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../counter.py" beforeDir="false" afterPath="$PROJECT_DIR$/../counter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fibonacci.py" beforeDir="false" afterPath="$PROJECT_DIR$/../fibonacci.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../fibonacci_test.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../fibonacci_test.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../logging.ini" beforeDir="false" afterPath="$PROJECT_DIR$/../logging.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../output.log" beforeDir="false" afterPath="$PROJECT_DIR$/../output.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../rsi_test.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../rsi_test.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../session" beforeDir="false" afterPath="$PROJECT_DIR$/../session" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../session_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/../session_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shareinvestor_scrapper.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../shareinvestor_scrapper.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../shareinvestor_scrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/../shareinvestor_scrapper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/../utils.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1hpHAWJWhWOT5sIGQmGCpnCGq73" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="nodejs_interpreter_path" value="node" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="04369b26-fa1a-41a2-b3f9-37f7f421583a" name="Default Changelist" comment="" />
+      <created>1600700970182</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600700970182</updated>
+      <workItem from="1600700971800" duration="2058000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

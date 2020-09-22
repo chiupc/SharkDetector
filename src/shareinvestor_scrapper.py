@@ -38,11 +38,52 @@ def crawl_time_sales(session,event):
     df=pd.DataFrame(lists).set_index('time')
     df.to_csv('test.csv')
     
+# def crawl_quote_movements(session,event,live=False):
+#     print(event)
+#     date_=datetime.fromtimestamp(event['to'])
+#     date_=date_.strftime("%Y-%m-%d")
+#     empty_chars='\xa0'     
+#     URL = 'http://www.shareinvestor.com/prices/quote_movements_f.html'
+#     if live:
+#         pageno=1
+#     else:
+#         pageno=-1
+#     params={'date':date_,'counter':event['counter']+'.MY','page':pageno}
+#     params=urllib.parse.urlencode(params)
+#     URL=URL+'?'+params
+#     page = session.get(URL)
+#     soup = BeautifulSoup(page.content, 'html.parser')
+#     rows=soup.find('table',{'id':"sic_quoteMovementTable"}).findAll('tr')
+#     lists=[]
+#     for i in range(2,len(rows)):
+#         raw_vals=rows[i].findAll('td')
+#         if(len(raw_vals)>=7):
+#             time_=raw_vals[0].text
+#             bq_vol_ = None if raw_vals[1].text==empty_chars else raw_vals[1].text
+#             try:
+#                 bq_price_=float(raw_vals[2].text)
+#             except Exception as e:
+#                 bq_price_=None
+#             ld_vol=None if raw_vals[3].text==empty_chars else float(raw_vals[3].text.replace(',',''))
+#             try:
+#                 ld_price=float(raw_vals[4].text)
+#             except Exception as e: 
+#                 ld_price=None
+#             type_=None if raw_vals[5].text==empty_chars else raw_vals[5].text
+#             sq_vol_=None if raw_vals[6].text==empty_chars else raw_vals[6].text
+#             try:
+#                 sq_price_=float(raw_vals[7].text)
+#             except Exception as e:
+#                 sq_price_=None
+#             row={'time':date_+' '+time_,'buy_queue_vol':bq_vol_,'buy_queue_price':bq_price_,'last_done_vol':ld_vol,'last_done_price':ld_price,'type':type_,'sell_queue_vol':sq_vol_,'sell_queue_price':sq_price_}
+#             lists.append(row)
+#     df=pd.DataFrame(lists).set_index('time')
+#     return df
+
+
 def crawl_quote_movements(session,event,live=False):
-    print(event)
     date_=datetime.fromtimestamp(event['to'])
-    date_=date_.strftime("%Y-%m-%d")
-    empty_chars='\xa0'     
+    date_=date_.strftime("%Y-%m-%d")    
     URL = 'http://www.shareinvestor.com/prices/quote_movements_f.html'
     if live:
         pageno=1
@@ -53,38 +94,28 @@ def crawl_quote_movements(session,event,live=False):
     URL=URL+'?'+params
     page = session.get(URL)
     soup = BeautifulSoup(page.content, 'html.parser')
-    rows=soup.find('table',{'id':"sic_quoteMovementTable"}).findAll('tr')
-    lists=[]
-    for i in range(2,len(rows)):
-        raw_vals=rows[i].findAll('td')
-        if(len(raw_vals)>=7):
-            time_=raw_vals[0].text
-            bq_vol_ = None if raw_vals[1].text==empty_chars else raw_vals[1].text
-            try:
-                bq_price_=float(raw_vals[2].text)
-            except Exception as e:
-                bq_price_=None
-            ld_vol=None if raw_vals[3].text==empty_chars else float(raw_vals[3].text.replace(',',''))
-            try:
-                ld_price=float(raw_vals[4].text)
-            except Exception as e: 
-                ld_price=None
-            type_=None if raw_vals[5].text==empty_chars else raw_vals[5].text
-            sq_vol_=None if raw_vals[6].text==empty_chars else raw_vals[6].text
-            try:
-                sq_price_=float(raw_vals[7].text)
-            except Exception as e:
-                sq_price_=None
-            row={'time':date_+' '+time_,'buy_queue_vol':bq_vol_,'buy_queue_price':bq_price_,'last_done_vol':ld_vol,'last_done_price':ld_price,'type':type_,'sell_queue_vol':sq_vol_,'sell_queue_price':sq_price_}
-            lists.append(row)
-    df=pd.DataFrame(lists).set_index('time')
+    table=soup.find('table',{'id':"sic_quoteMovementTable"})
+    #use pandas read_html as a more straightforward to parse html table
+    df = pd.read_html(str(table))[0]
+    new_cols = list()
+    for col in df.columns.values:
+        if col[0] == col[1]: new_cols.append(col[0].lower())
+        else: new_cols.append(' '.join(col).lower().replace(' ','_'))
+    df.columns = new_cols
+    tmp=df['buy_queue_vol'].str.replace(',','')
+    tmp=tmp.str.split(' ',expand=True)
+    df['buy_vol_chg']=tmp[0].str.extract("\((.*?)\)").astype(float)
+    df['buy_queue_vol']=tmp[1].astype(float)
+    tmp=df['sell_queue_vol'].str.replace(',','')
+    tmp=tmp.str.split(' ',expand=True)
+    df['sell_vol_chg']=tmp[0].str.extract("\((.*?)\)").astype(float)
+    df['sell_queue_vol']=tmp[1].astype(float)
+    df['time']=pd.to_datetime(df['time'])
     return df
 
 def get_quote_movements(session,event,live=True):
     df_=crawl_quote_movements(session,event,live)
     date_=event['to']
-    df_=df_.reset_index()
-    df_['time']=pd.to_datetime(df_['time'])
     for i,row in df_.iterrows():
         if(row['time'].replace(tzinfo=sgtz).timestamp()<date_):
             break    
@@ -114,7 +145,7 @@ def mine_quote_movements(session,board,category,from_,to_):
                         print('CSV exists. Not going to crawl.')
                     else:
                         df=crawl_quote_movements(session,event_)
-                        df.to_csv(save_path)
+                        df.set_index('time').to_csv(save_path)
             except Exception as e: print(e)
 
 def split_buy_sell_queue(df_):

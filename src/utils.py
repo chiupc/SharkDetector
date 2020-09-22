@@ -49,17 +49,27 @@ def build_force_csv(category):
     dir_=build_force_dir(category)
     filename=category.replace('&','').replace(' ','').lower()+'_force.csv'
     return dir_+filename
-    
+
+def build_fibo_csv(category,event):
+    date_=datetime.fromtimestamp(event['to']).strftime("%Y-%m-%d")
+    stockname = str(event['symbol']) + "_" + str(event['counter'])
+    filename = stockname + "_" + date_ + ".csv"
+    dir_ = os.path.join("history","fibonacci")
+    dir_ = os.path.join(dir_,category)
+    dir_ = os.path.join(dir_, stockname)
+    filepath = os.path.join(dir_,filename)
+    return filepath
+
 def create_csv_dir(event):
     date_=datetime.fromtimestamp(event['to']).strftime("%Y-%m-%d")
     name_=event['symbol']+'_'+event['counter']
-    data_list=['quote_movements','price','calculated_data']
+    data_list=['quote_movements','price','calculated_data','fibonacci']
     for data_item in data_list:
         dir_=os.path.join('history',data_item)
         dir_=os.path.join(dir_,event['category'])
         dir_=os.path.join(dir_,name_)
         if not os.path.exists(dir_): os.makedirs(dir_)
-
+            
 def get_counter_category(counter):
     listings=pd.read_csv('klse_listings.csv')
     return listings[listings['code']==counter]['cat'].values[0]
@@ -70,4 +80,8 @@ def get_counter_list(category="All"):
         return listings['code'].values,listings['symbol'].values
     else:
         return listings[listings['cat']==category]['code'].values,listings[listings['cat']==category]['symbol'].values
+    
+def get_categories():
+    listings=pd.read_csv('klse_listings.csv')
+    return listings['cat'].unique()
     

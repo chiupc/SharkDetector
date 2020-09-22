@@ -1,0 +1,36 @@
+redis:
+  host: "redis"
+  port: 6379
+  reconnect_max: 5
+  reconnect_interval: 5 #seconds
+  keys:
+    redis_failed_task: "failed_tasks"
+
+nats:
+  host: "nats"
+  port: "4222"
+  pub_interval: 10
+  pub_timeout: 30
+  subjects:
+    quote_tasks_subject: "quote_tasks"
+    quote_tasks_queue_name: "scrapers"
+  secrets:
+    shutdown: "sharkdetector11967"
+
+kafka:
+  status: "enabled"
+  brokers:
+    - host: "kafka-cluster"
+      port: "9094"
+  topics:
+    quote_tasks_kafka_topic: "quotesstream"
+
+rate_limiter:
+  task_per_sec: 10
+  max_bursts: 10
+
+scraper:
+  url: "http://www.shareinvestor.com/prices/quote_movements_f.html"
+  datefmt: "2006-01-02"
+  si_user: "chiupc"
+  si_password: "3514ddfbf9dfc148ac201899397e2d70"

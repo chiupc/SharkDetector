@@ -1,0 +1,4 @@
+org\sharkdetector\quotemovements_streaming\BatchJob.class
+org\sharkdetector\quotemovements_streaming\QuoteMovementMonitoring.class
+util\QuoteMovement.class
+org\sharkdetector\quotemovements_streaming\StreamingJob.class

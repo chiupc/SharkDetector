@@ -1,0 +1,2 @@
+Datetime,Close,CloseLast,CloseFirst,Grad,Grad_Pct,rolling_days,Fibo236,Fibo382,Fibo500,Fibo618,Fibo764,FiboStartDate,FiboStartPrice
+2020-05-04 08:00:00+08:00,0.59,0.59,0.415,0.175,42.16867469879518,25,0.5487,0.52315,0.5025,0.48185,0.4563,2020-06-26 08:00:00+08:00,0.505

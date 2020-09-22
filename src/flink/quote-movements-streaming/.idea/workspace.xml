@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="942eba05-1f98-4c89-b082-1aff2bfdd434" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../.ipynb_checkpoints/fibonacci_test-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../../.ipynb_checkpoints/fibonacci_test-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.ipynb_checkpoints/rsi_test-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../../.ipynb_checkpoints/rsi_test-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.ipynb_checkpoints/shareinvestor_scrapper-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../../.ipynb_checkpoints/shareinvestor_scrapper-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../counter.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../counter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../fibonacci.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../fibonacci.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../fibonacci_test.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../../fibonacci_test.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../logging.ini" beforeDir="false" afterPath="$PROJECT_DIR$/../../logging.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../output.log" beforeDir="false" afterPath="$PROJECT_DIR$/../../output.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../rsi_test.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../../rsi_test.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../session" beforeDir="false" afterPath="$PROJECT_DIR$/../../session" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../session_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../session_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../shareinvestor_scrapper.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../../shareinvestor_scrapper.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../shareinvestor_scrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../shareinvestor_scrapper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../utils.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="KubernetesApiPersistence">
+    <option name="context" value="docker-desktop" />
+    <option name="namespace" value="default" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA 2020.2\plugins\maven\lib\maven3" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1hjr3PiGfYKD9T3DdSW4KNQGbpQ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/quickstart" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="942eba05-1f98-4c89-b082-1aff2bfdd434" name="Default Changelist" comment="" />
+      <created>1600535145479</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600535145479</updated>
+      <workItem from="1600535146943" duration="28000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1600535173321">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1536.824@0.0.1920.1040" timestamp="1600535173321" />
+  </component>
+</project>

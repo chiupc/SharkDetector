@@ -1,0 +1,11 @@
+org\sharkdetector\flink\kafka\ThresholdDeserializer.class
+org\sharkdetector\flink\kafka\EventDeserializer.class
+org\sharkdetector\flink\BatchJob.class
+org\sharkdetector\flink\StreamingJob.class
+org\sharkdetector\flink\function\MapQuoteMovementFunction.class
+org\sharkdetector\flink\function\UpdatableQuoteMovementAlertFunction.class
+org\sharkdetector\flink\util\Alert.class
+org\sharkdetector\flink\util\QuoteMovement.class
+org\sharkdetector\flink\util\QuoteMovementRaw.class
+org\sharkdetector\flink\QuoteMovementMonitoring.class
+org\sharkdetector\flink\util\Threshold.class

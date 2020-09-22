@@ -4,6 +4,7 @@ from shareinvestor_scrapper import *
 import plotly.graph_objects as go
 from datetime import timedelta, time, date,datetime
 from utils import get_counter_list
+import numpy as np
 
 def cal_price_diff(list_):
     list__=list_.values
@@ -61,6 +62,7 @@ def calc_retracement_level(df, df_fibo):
 
 def mine_retracement_level(category="All",period=90):
     listings_code,listings_symbol=get_counter_list(category)
+    retracement_level=[]
     for i in range(len(listings_symbol)):
         #get counter price history
         try:
@@ -71,14 +73,23 @@ def mine_retracement_level(category="All",period=90):
             df['Datetime']=pd.to_datetime(df['Datetime'])
             df['Close']=df['Close'].astype(float)
             df_fibo=cal_fibonacci(df)
-            retracement_level=[]
+            if category == "All":
+                event['category']=get_counter_category(event['counter'])
+                create_csv_dir(event)
+                csvname = build_fibo_csv(get_counter_category(event['counter']),event)
+            else:
+                event['category']=category
+                create_csv_dir(event)
+                csvname = build_fibo_csv(category,event)
+            df_fibo.to_csv(csvname,index=False)
             retracement_level.append(calc_retracement_level(df,df_fibo))
         except Exception as e:
-            retracement_level.append(None)
+            retracement_level.append(np.nan)
             logger.error(e)
     dict_={'symbol':listings_symbol, 'code':listings_code,'retracement_level':retracement_level}
     df_retracement=pd.DataFrame.from_dict(dict_)
     return df_retracement
+    
 
 def plot_fibonacci(df,df_max,symbol):
     fig = go.Figure()
