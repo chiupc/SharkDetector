@@ -32,6 +32,6 @@ rate_limiter:
 scraper:
   url: "http://www.shareinvestor.com/prices/quote_movements_f.html"
   datefmt: "2006-01-02"
-  si_user: "chiupc"
-  si_password: "3514ddfbf9dfc148ac201899397e2d70"
+  si_user: ""
+  si_password: ""
 
